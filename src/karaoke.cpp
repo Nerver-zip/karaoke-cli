@@ -170,7 +170,7 @@ void clearLyricsArea(
             return rgb(r, g, b);
         }
 
-        return "\033[0m"; // fallback
+        return "\033[0m";
     };
 
     // === Limpa área textual ===
