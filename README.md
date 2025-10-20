@@ -2,6 +2,10 @@
 
 Um **player de letras sincronizadas** para terminal com integração ao **Spotify via `playerctl`**, renderização de capas com **Kitty + icat**, e visual totalmente configurável (cores, tamanho de fontes, posições, etc).  
 
+<p align="center">
+  <img src="assets/example.png" alt="Exemplo do Karaoke CLI" width="800"/>
+</p>
+
 ---
 
 ## 🚀 Recursos
