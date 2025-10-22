@@ -49,7 +49,7 @@ int main() {
         std::atexit(restoreFont);
     }
 
-    std::string title, artist, lrcFile, coverFile; // coverFile persistente
+    std::string title, artist, lrcFile, coverFile;
     std::vector<LyricLine> lyrics;
     size_t currentLine = 0;
 
@@ -96,7 +96,7 @@ int main() {
                 for (char &c : safeTitle)
                     if (!std::isalnum((unsigned char)c) && c != '_' && c != '-') c = '_';
 
-                coverFile = "../local/icons/" + safeTitle + "_cover.jpg"; // atualizado globalmente
+                coverFile = "../local/icons/" + safeTitle + "_cover.jpg";
 
                 if (!std::filesystem::exists(coverFile) || std::filesystem::file_size(coverFile) == 0) {
                     std::string cmd;
@@ -191,6 +191,11 @@ int main() {
             printLyrics(lyrics, currentLine, title, artist, cfg);
             currentLine++;
         }
+        
+        // ===== ATUALIZAÇÃO DA BARRA DE PROGRESSO =====
+        std::string durationStr = exec("playerctl --player=spotify metadata mpris:length");
+        double duration = durationStr.empty() ? 0.0 : std::stod(durationStr) / 1e6;
+        drawProgressBar(position, duration, cfg);
 
         // ===== TRATA REDIMENSIONAMENTO DE TERMINAL =====
         if (resized) {
@@ -218,6 +223,13 @@ int main() {
 
             clearLyricsArea(title, artist, cfg);
             printLyrics(lyrics, currentLine, title, artist, cfg);
+
+            bool resizable = cfg.count("progress.resizable") && cfg.at("progress.resizable") == "true";
+            if (resizable) {
+                std::string durationStr = exec("playerctl --player=spotify metadata mpris:length");
+                double duration = durationStr.empty() ? 0.0 : std::stod(durationStr) / 1e6;
+                drawProgressBar(position, duration, cfg);
+            }
         }
 
         lastPosition = position;

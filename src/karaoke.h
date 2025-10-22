@@ -21,14 +21,6 @@ std::vector<LyricLine> readLRC(const std::string& filename);
 // Procura arquivo LRC em várias combinações de título e artista
 std::string findLRC(const std::string& title, const std::string& artist); 
 
-void clearScreen();
-void clearLyricsArea(
-    const std::string& title = "",
-    const std::string& artist = "",
-    const std::unordered_map<std::string, std::string>& cfg = {}
-); 
-void restoreFont();
-
 // Mostra a linha atual e algumas linhas de contexto
 void printLyrics(
     const std::vector<LyricLine>& lyrics,
@@ -36,6 +28,24 @@ void printLyrics(
     const std::string& title,
     const std::string& artist,
     const std::unordered_map<std::string, std::string>& cfg);
+
+
+std::string formatTime(double seconds);
+
+void drawProgressBar(
+    double position,
+    double duration,
+    const std::unordered_map<std::string, std::string>& cfg
+);
+
+void clearScreen();
+
+void clearLyricsArea(
+    const std::string& title = "",
+    const std::string& artist = "",
+    const std::unordered_map<std::string, std::string>& cfg = {}
+); 
+void restoreFont();
 
 void restoreCursor();
 
