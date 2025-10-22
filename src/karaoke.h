@@ -3,6 +3,7 @@
 #include <iostream>
 #include <unordered_map>
 #include <vector>
+#include <atomic>
 
 struct LyricLine {
     double time;
@@ -39,3 +40,6 @@ void printLyrics(
 void restoreCursor();
 
 void handleSignal(int);
+
+extern std::atomic<bool> resized;
+void handleResize(int);

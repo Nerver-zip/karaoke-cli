@@ -8,6 +8,9 @@
 #include <unordered_map>
 #include <sstream>
 #include <cstdlib>
+#include <atomic>
+#include <sys/ioctl.h>
+#include <unistd.h>
 
 struct LyricLine {
     double time;
@@ -272,4 +275,9 @@ void handleSignal(int) {
     restoreCursor();
     restoreFont();
     std::_Exit(0);
+}
+
+std::atomic<bool> resized(false);
+void handleResize(int) {
+    resized = true;
 }

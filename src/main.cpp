@@ -15,6 +15,7 @@ int main() {
     atexit(restoreFont);
     std::signal(SIGINT, handleSignal);
     std::signal(SIGTERM, handleSignal);
+    std::signal(SIGWINCH, handleResize);
 
     std::cout << "\033[?25l" << std::flush;
 
@@ -48,7 +49,7 @@ int main() {
         std::atexit(restoreFont);
     }
 
-    std::string title, artist, lrcFile;
+    std::string title, artist, lrcFile, coverFile; // coverFile persistente
     std::vector<LyricLine> lyrics;
     size_t currentLine = 0;
 
@@ -95,7 +96,7 @@ int main() {
                 for (char &c : safeTitle)
                     if (!std::isalnum((unsigned char)c) && c != '_' && c != '-') c = '_';
 
-                std::string coverFile = "../local/icons/" + safeTitle + "_cover.jpg";
+                coverFile = "../local/icons/" + safeTitle + "_cover.jpg"; // atualizado globalmente
 
                 if (!std::filesystem::exists(coverFile) || std::filesystem::file_size(coverFile) == 0) {
                     std::string cmd;
@@ -189,6 +190,34 @@ int main() {
         if (currentLine < lyrics.size() && position >= lyrics[currentLine].time) {
             printLyrics(lyrics, currentLine, title, artist, cfg);
             currentLine++;
+        }
+
+        // ===== TRATA REDIMENSIONAMENTO DE TERMINAL =====
+        if (resized) {
+            resized = false;
+
+            struct winsize w;
+            ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
+            int termWidth = w.ws_col;
+
+            if (autoPos)
+                coverX = termWidth - coverW - coverOffset;
+
+            system("kitty +kitten icat --clear 2>/dev/null");
+
+            if (!coverFile.empty() && std::filesystem::exists(coverFile)) {
+                std::string alignFlags = " --align right";
+                std::string aspectFlag = stretch ? " --no-preserve-aspect-ratio" : "";
+                std::string icatCmd =
+                    "kitty +kitten icat --transfer-mode=memory" + alignFlags + aspectFlag +
+                    " --place " + std::to_string(coverW) + "x" + std::to_string(coverH) + "@" +
+                    std::to_string(coverX) + "x" + std::to_string(coverY) +
+                    " \"" + coverFile + "\"";
+                system(icatCmd.c_str());
+            }
+
+            clearLyricsArea(title, artist, cfg);
+            printLyrics(lyrics, currentLine, title, artist, cfg);
         }
 
         lastPosition = position;
