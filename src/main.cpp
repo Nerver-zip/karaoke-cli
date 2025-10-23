@@ -9,6 +9,7 @@
 #include <unistd.h>
 #include <csignal>
 #include "karaoke.h"
+#include "utils.h"
 
 int main() {
     atexit(restoreCursor);
@@ -92,11 +93,8 @@ int main() {
                 if (coverUrl.rfind("file://", 0) == 0)
                     coverUrl = coverUrl.substr(7);
 
-                std::string safeTitle = title;
-                for (char &c : safeTitle)
-                    if (!std::isalnum((unsigned char)c) && c != '_' && c != '-') c = '_';
-
-                coverFile = "../local/icons/" + safeTitle + "_cover.jpg";
+                std::string hash = hashString(title + artist);
+                coverFile = "../local/icons/" + hash + "_cover.jpg";
 
                 if (!std::filesystem::exists(coverFile) || std::filesystem::file_size(coverFile) == 0) {
                     std::string cmd;

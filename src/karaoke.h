@@ -4,6 +4,7 @@
 #include <unordered_map>
 #include <vector>
 #include <atomic>
+#include "karaoke.h"
 
 struct LyricLine {
     double time;

@@ -1,12 +1,12 @@
 # === Configurações ===
 CXX = g++
-CXXFLAGS = -std=c++17 -Wall -O2 -march=native
+CXXFLAGS = -std=c++17 -Wall -O2 -march=native -lssl -lcrypto
 SRC_DIR = src
 BIN_DIR = bin
 TARGET = $(BIN_DIR)/karaoke
 
-SRC = $(SRC_DIR)/main.cpp $(SRC_DIR)/karaoke.cpp
-HEADERS = $(SRC_DIR)/karaoke.h
+SRC = $(SRC_DIR)/main.cpp $(SRC_DIR)/karaoke.cpp $(SRC_DIR)/utils.cpp
+HEADERS = $(SRC_DIR)/karaoke.h $(SRC_DIR)/utils.h
 
 # === Regras ===
 all: $(TARGET)
@@ -26,7 +26,7 @@ clean:
 # 🔥 Limpa arquivos locais (letras baixadas, dumps, etc.)
 clean_local:
 	@echo "🧺 Cleaning local files..."
-	@rm -rf local/songs/* local/dump/* 2>/dev/null || true
+	@rm -rf local/songs/* local/icons/* 2>/dev/null || true
 	@echo "🧹 Done."
 
 debug:
