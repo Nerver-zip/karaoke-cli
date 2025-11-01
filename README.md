@@ -58,6 +58,7 @@ cd ~/Desktop/dev/karaoke-cli/bin
 
 Ou crie um alias permanente no `.bashrc` / `.zshrc`:
 ```bash
+# Adicionar essa linha em bashrc ou zshrc e salvar
 alias karaoke='cd ~/Desktop/dev/karaoke-cli/bin && ./karaoke'
 # Se usar zsh
 source ~/.zshrc
