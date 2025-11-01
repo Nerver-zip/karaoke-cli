@@ -59,7 +59,10 @@ cd ~/Desktop/dev/karaoke-cli/bin
 Ou crie um alias permanente no `.bashrc` / `.zshrc`:
 ```bash
 alias karaoke='cd ~/Desktop/dev/karaoke-cli/bin && ./karaoke'
-source ~/.zshrc ou source ~/.bashrc se usar Bash  
+# Se usar zsh
+source ~/.zshrc
+# Se usar bash
+source ~/.bashrc  
 ```
 Assim você pode fazer `karaoke` a partir de qualquer lugar do seu sistema.
 
